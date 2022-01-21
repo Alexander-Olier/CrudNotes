@@ -1,38 +1,27 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Views() {
-  const [error, setError] = useState(null);
-  const [isLoading, setLoading] = useState(false);
-  const [items, setItems] = useState([]);
+  const [notes, setNotes] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/note")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-        
-          setLoading(true);
-          console.log(result)
-          setItems(result);
-        },
-        (error) => {
-          setLoading(true);
-          setError(error);
+      .then(res => {
+        if (res.ok) {
+          return res.json();
         }
-      );
+      }).then((jsonRes) => setNotes(jsonRes.notes));
   }, []);
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  } else if (!isLoading) {
-    return <div>Loadding...</div>;
-  } else {
-    return (
-      <div>
+  console.log(notes)
 
-        {items.map((item) => (
-          <li key={item._id}>{item}</li>
-        ))}
-      </div>
-    );
-  }
+  return (
+    <ul>
+      {!!notes && notes.map(item => {
+        return (
+          <li key={item._id}>
+            {item.description} 
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
