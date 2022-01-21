@@ -1,7 +1,17 @@
+import { BrowserRouter, Routes, Route, Redirect } from "react-router-dom";
+import logo from "./logo.svg";
 import "./App.css";
+import Views from "./components/Views";
+
 
 function App() {
-  return <div>Hola mundo</div>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/list" element={<Views />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
