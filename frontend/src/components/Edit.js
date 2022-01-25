@@ -6,7 +6,6 @@ export default function Edit() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [object, setObjetct] = useState("");
   const onTitleChange = (e) => setTitle(e.target.value);
   const onDescriptionChange = (e) => setDescription(e.target.value);
 
@@ -30,17 +29,17 @@ export default function Edit() {
   };
 
   useEffect(() => {
-    getNotesOne();
-  },[]);
-
-  const getNotesOne = async () => {
     fetch(`http://localhost:5000/api/note/noteOne/${_id}`)
       .then((response) => response.json())
-      .then((data) => setObjetct(data));
+      .then((data) => {
+        setTitle(data.title) 
+        setDescription(data.description)
+      });
 
-    setTitle(object.title);
-    setDescription(object.description);
-  };
+   
+  }, []);
+
+  console.log(title);
 
   return (
     <div>
@@ -62,7 +61,7 @@ export default function Edit() {
             onChange={onDescriptionChange}
           />
 
-          <button type="submit" value="Submit" />
+          <input type="submit" value="Submit" />
         </form>
       </div>
     </div>
