@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import * as React from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 import Views from "./components/Views";
 import Form from "./components/Form";
@@ -6,15 +7,20 @@ import Edit from "./components/Edit";
 import Delete from "./components/Delete";
 
 function App() {
+  let location = useLocation();
+  console.log(location.pathname);
+  let background = location.state && location.state.background;
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/list" element={<Views />} />
-        <Route path="/create" element={<Form />} />
-        <Route path="/edit/:_id" element={<Edit />} />
-        <Route path="/delete/:_id" element={<Delete />} />
+    <div>
+      <Routes location={background || location}>
+        <Route exact path="/" children={<Form />} />
+        <Route path="/list" children={<Views />} />
+        <Route path="/edit/:_id" children={<Form />} />
+        <Route path="/delete/:_id" children={<Delete />} />
       </Routes>
-    </BrowserRouter>
+      {background && <Route path="/edit/:_id" children={<Edit />} />}
+    </div>
   );
 }
 
