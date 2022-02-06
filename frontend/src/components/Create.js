@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 
-export default function Form(props) {
+export default function Create(props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const data = { title, description };
+  const navigate = useNavigate();
 
   const onTitleChange = (e) => setTitle(e.target.value);
   const onDescriptionChange = (e) => setDescription(e.target.value);
@@ -12,8 +14,8 @@ export default function Form(props) {
     fetch("http://localhost:5000/api/note/add", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(data),
     })
@@ -26,30 +28,33 @@ export default function Form(props) {
     console.log(data);
     e.preventDefault();
     postNotes();
+    navigate('/')
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          title:
+    <div className="container">
+      <div className="contForm">
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             name="title"
+            placeholder="title"
             value={title}
             onChange={onTitleChange}
           />
-        </label>
-        <label>
-          Description:
+
           <textarea
+            rows={5}
             type="text"
             name="description"
+            placeholder="description"
+            className="textAr"
             value={description}
             onChange={onDescriptionChange}
           />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+
+          <input type="submit" value="Agregar" />
+        </form>
+      </div>
     </div>
   );
 }

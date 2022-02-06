@@ -26,7 +26,7 @@ export default function Item(props) {
   };
 
   const deleteNotes = () => {
-    navigate("/list");
+    navigate("/");
 
     const Methods = {
       method: "DELETE",
@@ -39,7 +39,6 @@ export default function Item(props) {
       .then((data) => console.log(data))
       .catch((err) => console.log(err));
   };
-  let background = location.state && location.state.background;
 
 
   return (
@@ -68,7 +67,6 @@ export default function Item(props) {
 
           <MenuItem onClick={deleteNotes}>Eliminar</MenuItem>
 
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
         </Menu>
         <button onClick={handleClick}>
           <ExpandMoreIcon />

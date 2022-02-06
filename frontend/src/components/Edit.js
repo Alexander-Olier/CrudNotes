@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-
+//Material ui
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 
 export default function Edit() {
   const { _id } = useParams();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const onTitleChange = (e) => setTitle(e.target.value);
   const onDescriptionChange = (e) => setDescription(e.target.value);
   //modal
-
+  const [modalVisible, setModalVisible] = useState(
+    location.pathname === `/edit/${_id}`
+  );
 
   const putNotes = (e) => {
     e.preventDefault();
@@ -28,7 +32,10 @@ export default function Edit() {
         description: description,
       }),
     })
-      .then((res) => navigate("/list"))
+      .then((res) => {
+        navigate("/");
+        back();
+      })
       .catch((err) => console.log(err));
   };
 
@@ -43,53 +50,32 @@ export default function Edit() {
 
   let back = (e) => {
     e.stopPropagation();
-    navigate(-1);
+    setModalVisible(!modalVisible);
   };
   return (
-    <div
-      onClick={back}
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        background: "rgba(0, 0, 0, 0.15)",
-      }}
-    >
-      <div
-        className="modal"
-        style={{
-          position: "absolute",
-          background: "#fff",
-          top: 25,
-          left: "10%",
-          right: "10%",
-          padding: 15,
-          border: "2px solid #444",
-        }}
-      >
-        <div className="contForm">
-          <form onSubmit={putNotes}>
-            <label>title:</label>
-            <input
-              type="text"
-              name="title"
-              value={title}
-              onChange={onTitleChange}
-            />
+    <div className="container">
+      <div className="contForm">
+        <form onSubmit={putNotes}>
+          <input
+            type="text"
+            name="title"
+            placeholder="title"
+            value={title}
+            onChange={onTitleChange}
+          />
 
-            <label>Description: </label>
-            <textarea
-              type="text"
-              name="description"
-              value={description}
-              onChange={onDescriptionChange}
-            />
+          <textarea
+          rows={5}
+            type="text"
+            name="description"
+            placeholder="description"
+            className="textAr"
+            value={description}
+            onChange={onDescriptionChange}
+          />
 
-            <input type="submit" value="Submit" />
-          </form>
-        </div>
+          <input type="submit" value="Editar" />
+        </form>
       </div>
     </div>
   );

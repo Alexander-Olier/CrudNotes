@@ -1,25 +1,21 @@
 import * as React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Views from "./components/Views";
-import Form from "./components/Form";
 import Edit from "./components/Edit";
-import Delete from "./components/Delete";
+import Create from "./components/Create";
+import Header from "./components/min/Header";
 
 function App() {
-  let location = useLocation();
-  console.log(location.pathname);
-  let background = location.state && location.state.background;
 
   return (
     <div>
-      <Routes location={background || location}>
-        <Route exact path="/" children={<Form />} />
-        <Route path="/list" children={<Views />} />
-        <Route path="/edit/:_id" children={<Form />} />
-        <Route path="/delete/:_id" children={<Delete />} />
+      <Header />
+      <Routes>
+      <Route path="/" exact element={<Views />} />
+        <Route path="add" element={<Create />} />
+        <Route path="/edit/:_id" element={<Edit />} />
       </Routes>
-      {background && <Route path="/edit/:_id" children={<Edit />} />}
     </div>
   );
 }
